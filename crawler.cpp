@@ -66,6 +66,7 @@ void Crawler::Run() {
     // TODO: Alternate termination
     while (visited_urls_cnt_ < max_urls_cnt_) {
         if (working_threads_ < max_threads_ && !(urls_queue_.Front().empty())) {
+            working_threads_++;
             std::thread url_thread([this] {
                 std::string new_url = urls_queue_.GetAndPop();
                 std::string html_content = ScrapeWebpage(new_url);
@@ -77,9 +78,9 @@ void Crawler::Run() {
                         urls_queue_.Push(linked_url);
                     }
                 }
+                working_threads_--;
             });
             url_thread.detach();
-            working_threads_++;
         }
     }
     running_status_ = false;
