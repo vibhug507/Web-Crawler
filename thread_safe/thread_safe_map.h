@@ -4,7 +4,6 @@
 template<typename Key, typename Value>
 class ThreadSafeMap {
     public:
-    std::mutex lock_;
 
     Value Get(Key K) {
         std::lock_guard<std::mutex> lock(lock_);
@@ -24,5 +23,7 @@ class ThreadSafeMap {
     std::map<std::string, int> GetMap() const { return mp_; }
 
     private:
+    
+    std::mutex lock_;
     std::map<Key, Value> mp_;
 };

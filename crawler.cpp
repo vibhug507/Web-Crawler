@@ -10,7 +10,7 @@ Crawler::Crawler(std::vector<std::string> seed_urls, int max_threads, int max_ur
     }
     max_threads_ = max_threads;
     max_urls_cnt_ = max_urls_cnt;
-    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl_global_init(CURL_GLOBAL_DEFAULT);    
 }
 
 static size_t callback(void* contents, size_t size, size_t nmemb, std::string* output) {
@@ -64,13 +64,13 @@ std::vector<std::string> Crawler::ParseContent(std::string html_content) const {
 void Crawler::Run() {
     running_status_ = true;
     // TODO: Alternate termination
-    while (visited_urls_cnt_ < max_urls_cnt_) {
-        if (working_threads_ < max_threads_ && !(urls_queue_.Front().empty())) {
-            working_threads_++;
+    while (visited_urls_cnt_.GetValue() < max_urls_cnt_) {
+        if (working_threads_.GetValue() < max_threads_ && !(urls_queue_.Front().empty())) {
+            working_threads_.Add(1);
             std::thread url_thread([this] {
                 std::string new_url = urls_queue_.GetAndPop();
                 std::string html_content = ScrapeWebpage(new_url);
-                visited_urls_cnt_++;
+                visited_urls_cnt_.Add(1);
                 std::vector<std::string> linked_urls = ParseContent(html_content);
                 for (const std::string& linked_url : linked_urls) {
                     if (!visited_urls_.Get(linked_url)) {
@@ -78,7 +78,7 @@ void Crawler::Run() {
                         urls_queue_.Push(linked_url);
                     }
                 }
-                working_threads_--;
+                working_threads_.Sub(1);
             });
             url_thread.detach();
         }

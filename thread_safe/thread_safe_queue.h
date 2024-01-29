@@ -4,7 +4,6 @@
 template<typename T>
 class ThreadSafeQueue {
     public:
-    std::mutex lock_;
 
     void Push(T value) {
         std::lock_guard<std::mutex> lock(lock_);
@@ -34,6 +33,6 @@ class ThreadSafeQueue {
     }
 
     private:
+    std::mutex lock_;
     std::queue<T> q_;
-
 };

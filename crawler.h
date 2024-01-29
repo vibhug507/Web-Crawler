@@ -8,6 +8,7 @@
 
 #include "thread_safe/thread_safe_map.h"
 #include "thread_safe/thread_safe_queue.h"
+#include "thread_safe/thread_safe_var.h"
 
 class Crawler {
     public:
@@ -25,11 +26,10 @@ class Crawler {
     std::map<std::string, int> GetVisitedURLs() const { return visited_urls_.GetMap(); }
     
     private:
-
-    // TODO: Make these thread-safe
-    int visited_urls_cnt_ = 0;
+    
+    ThreadSafeVar<int> visited_urls_cnt_{0};
     int max_threads_;
-    int working_threads_ = 0;
+    ThreadSafeVar<int> working_threads_{0};
     int max_urls_cnt_;
     bool running_status_ = false;
 
