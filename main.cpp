@@ -16,7 +16,7 @@ int main() {
     while (crawler.GetRuningStatus());
 
     std::map<std::string, int> urls_crawled = crawler.GetVisitedURLs();
-    for (const auto url : urls_crawled) {
+    for (const auto& url : urls_crawled) {
         std::cout << url.first << std::endl;
     }
 
