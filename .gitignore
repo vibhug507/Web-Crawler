@@ -1,7 +1,0 @@
-.vscode/
-bazel-bin/
-bazel-out/
-bazel-Project2/
-bazel-testlogs/
-MODULE.bazel
-MODULE.bazel.lock
