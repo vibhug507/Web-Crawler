@@ -44,8 +44,7 @@ std::string Crawler::ScrapeWebpage(std::string url) const {
 }
 
 std::vector<std::string> Crawler::ParseContent(std::string html_content) const {
-    // TODO: More robust regex
-    std::regex url_regex("(https?://\\S+)");
+    std::regex url_regex("(https?://[a-zA-Z\d/.:@?=-]+)");
 
     std::sregex_iterator url_iterator(html_content.begin(), html_content.end(), url_regex);
     std::sregex_iterator end;
