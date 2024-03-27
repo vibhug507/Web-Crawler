@@ -2,14 +2,12 @@
 
 #include "crawler.h"
 
-Crawler::Crawler(std::vector<std::string> seed_urls, int max_threads, int max_urls_cnt) {
-    seed_urls_ = seed_urls;
+Crawler::Crawler(std::vector<std::string> seed_urls, int max_threads, int max_urls_cnt) :
+                seed_urls_(seed_urls), max_threads_(max_threads), max_urls_cnt_(max_urls_cnt) {
     for (const std::string& url : seed_urls) {
         urls_queue_.Push(url);
         visited_urls_.Set(url, 1);
     }
-    max_threads_ = max_threads;
-    max_urls_cnt_ = max_urls_cnt;
     curl_global_init(CURL_GLOBAL_DEFAULT);    
 }
 
